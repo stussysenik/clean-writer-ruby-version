@@ -1,12 +1,23 @@
+<div align="center">
+
 # Clean Writer (Ruby Version)
 
-> A distraction-free writing app with real-time syntax highlighting, 16 themes, song mode with rhyme detection — rebuilt in Rails 8 + React 19 with server persistence.
+### Distraction-free writing with real-time syntax highlighting
 
-![Editor — Classic Theme](docs/screenshots/08-classic-light.jpg)
+[![Language](https://img.shields.io/github/languages/top/stussysenik/clean-writer-ruby-version?style=flat-square)]()
+[![Last Commit](https://img.shields.io/github/last-commit/stussysenik/clean-writer-ruby-version?style=flat-square)]()
+[![Stars](https://img.shields.io/github/stars/stussysenik/clean-writer-ruby-version?style=flat-square)]()
+[![Repo Size](https://img.shields.io/github/repo-size/stussysenik/clean-writer-ruby-version?style=flat-square)]()
 
-**[Live Demo](https://clean-writer-ruby-version.fly.dev/)**
+[Live Demo](https://clean-writer-ruby-version.fly.dev/)
+
+</div>
 
 ---
+
+> 16 themes, song mode with rhyme detection — rebuilt in Rails 8 + React 19 with server persistence.
+
+![Editor — Classic Theme](docs/screenshots/08-classic-light.jpg)
 
 ## What Is This
 
