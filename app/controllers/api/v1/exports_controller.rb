@@ -3,7 +3,7 @@ module Api
     class ExportsController < BaseController
       def markdown
         content = params[:content] || ""
-        filename = params[:filename] || "nerv-writer-export.md"
+        filename = params[:filename] || "clean-writer-export.md"
 
         send_data content,
           filename: filename,

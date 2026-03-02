@@ -112,7 +112,7 @@ export async function exportMarkdown(content: string, filename?: string) {
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  a.download = filename || 'nerv-writer.md'
+  a.download = filename || 'clean-writer.md'
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)
@@ -155,7 +155,7 @@ export function createDebouncedSave<T>(
 }
 
 // Offline queue using IndexedDB
-const OFFLINE_DB = 'nerv_writer_offline'
+const OFFLINE_DB = 'clean_writer_offline'
 const OFFLINE_STORE = 'pending_saves'
 
 function queueOfflineSave(data: unknown) {

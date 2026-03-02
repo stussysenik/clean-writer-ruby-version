@@ -71,7 +71,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({
   orderedThemes = THEMES,
   hasOverridesForTheme,
 }) => {
-  const MAX_VISIBLE = 10;
+  const MAX_VISIBLE = 20;
   const visibleThemes = orderedThemes
     .filter((t) => !hiddenThemeIds.includes(t.id))
     .slice(0, MAX_VISIBLE);

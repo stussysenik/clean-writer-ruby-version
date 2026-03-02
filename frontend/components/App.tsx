@@ -427,7 +427,7 @@ const App: React.FC<AppProps> = ({ initialState }) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "nerv-writer.md";
+    a.download = "clean-writer.md";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -589,7 +589,7 @@ const App: React.FC<AppProps> = ({ initialState }) => {
 
       {/* Toasts */}
       <Toast message="You need at least one theme" isVisible={showLastThemeToast} onDismiss={() => setShowLastThemeToast(false)} type="warning" />
-      <Toast message="Exported nerv-writer.md" isVisible={showExportToast} onDismiss={() => setShowExportToast(false)} type="success" />
+      <Toast message="Exported clean-writer.md" isVisible={showExportToast} onDismiss={() => setShowExportToast(false)} type="success" />
       <Toast message={customThemeToast?.message || ""} isVisible={!!customThemeToast} onDismiss={() => setCustomThemeToast(null)} type={customThemeToast?.type || "success"} />
 
       {/* Top Bar */}
