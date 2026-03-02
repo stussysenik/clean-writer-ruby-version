@@ -1,0 +1,206 @@
+/* NERV Animations — GPU-accelerated (transform/opacity/clip-path only) */
+
+/* Scanlines — static repeating gradient overlay */
+.nerv-scanlines {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+  opacity: 0.15;
+}
+
+/* Screen flicker */
+@keyframes nerv-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.98; }
+  75% { opacity: 0.97; }
+  92% { opacity: 0.99; }
+}
+
+.nerv-flicker {
+  animation: nerv-flicker 4s ease-in-out infinite;
+}
+
+/* Horizontal tear / glitch */
+@keyframes nerv-tear {
+  0%, 100% { clip-path: inset(0); transform: translateX(0); }
+  12.5% { clip-path: inset(40% 0 55% 0); transform: translateX(2px); }
+  25% { clip-path: inset(0); transform: translateX(0); }
+  37.5% { clip-path: inset(70% 0 10% 0); transform: translateX(-3px); }
+  50% { clip-path: inset(0); transform: translateX(0); }
+  62.5% { clip-path: inset(15% 0 80% 0); transform: translateX(1px); }
+  75% { clip-path: inset(0); transform: translateX(0); }
+}
+
+.nerv-tear {
+  animation: nerv-tear 8s steps(1) infinite;
+}
+
+/* Glitch RGB split */
+@keyframes nerv-glitch-subtle {
+  0%, 100% { text-shadow: none; }
+  25% { text-shadow: -1px 0 #FF00FF, 1px 0 #00FFFF; }
+  50% { text-shadow: none; }
+  75% { text-shadow: 1px 0 #FF00FF, -1px 0 #00FFFF; }
+}
+
+@keyframes nerv-glitch-aggressive {
+  0%, 100% { text-shadow: none; }
+  10% { text-shadow: -2px 0 #FF00FF, 2px 0 #00FFFF; }
+  20% { text-shadow: 3px 0 #FF00FF, -3px 0 #00FFFF; }
+  30% { text-shadow: none; }
+  60% { text-shadow: -1px 0 #FF00FF, 1px 0 #00FFFF; }
+  80% { text-shadow: 2px 0 #FF00FF, -2px 0 #00FFFF; }
+  90% { text-shadow: none; }
+}
+
+.nerv-glitch-subtle {
+  animation: nerv-glitch-subtle 8s steps(1) infinite;
+}
+
+.nerv-glitch-aggressive {
+  animation: nerv-glitch-aggressive 4s steps(1) infinite;
+}
+
+/* Cursor blink (530ms matches original) */
+@keyframes nerv-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.nerv-blink {
+  animation: nerv-blink 1.06s step-end infinite;
+}
+
+/* Border glow pulse */
+@keyframes nerv-border-glow {
+  0%, 100% { box-shadow: 0 0 4px var(--nerv-red), inset 0 0 4px rgba(255, 0, 64, 0.05); }
+  50% { box-shadow: 0 0 12px var(--nerv-red), inset 0 0 8px rgba(255, 0, 64, 0.1); }
+}
+
+.nerv-border-glow {
+  animation: nerv-border-glow 3s ease-in-out infinite;
+}
+
+/* Warning pulse */
+@keyframes nerv-warning-pulse {
+  0%, 100% { opacity: 1; background-color: rgba(255, 0, 64, 0.1); }
+  50% { opacity: 0.7; background-color: rgba(255, 0, 64, 0.2); }
+}
+
+.nerv-warning-pulse {
+  animation: nerv-warning-pulse 1.5s ease-in-out infinite;
+}
+
+/* Button hover glow */
+@keyframes nerv-hover-glow {
+  0%, 100% { box-shadow: 0 0 4px var(--nerv-red); }
+  50% { box-shadow: 0 0 12px var(--nerv-red), 0 0 24px rgba(255, 0, 64, 0.3); }
+}
+
+.nerv-hover-glow {
+  animation: nerv-hover-glow 2s ease-in-out infinite;
+}
+
+/* Button active press */
+.nerv-press:active {
+  transform: scale(0.95);
+  transition: transform 100ms ease;
+}
+
+/* Number flicker */
+@keyframes nerv-number-flicker {
+  0%, 100% { opacity: 1; }
+  33% { opacity: 0.85; }
+  66% { opacity: 0.95; }
+  80% { opacity: 0.8; }
+}
+
+.nerv-number-flicker {
+  animation: nerv-number-flicker 3s ease-in-out infinite;
+}
+
+/* Status dot pulse */
+@keyframes nerv-status-dot {
+  0%, 100% { box-shadow: 0 0 2px currentColor; }
+  50% { box-shadow: 0 0 6px currentColor, 0 0 12px currentColor; }
+}
+
+.nerv-status-dot {
+  animation: nerv-status-dot 2s ease-in-out infinite;
+}
+
+/* Theme transition flash */
+@keyframes nerv-flash {
+  0% { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+
+.nerv-flash {
+  animation: nerv-flash 200ms ease-out forwards;
+}
+
+/* Vignette overlay */
+.nerv-vignette {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+
+/* Phosphor glow utility */
+.nerv-phosphor {
+  text-shadow: 0 0 4px currentColor, 0 0 8px currentColor;
+}
+
+.nerv-phosphor-strong {
+  text-shadow: 0 0 4px currentColor, 0 0 8px currentColor, 0 0 16px currentColor;
+}
+
+/* Angular clip-path for panels (45deg corners) */
+.nerv-clip {
+  clip-path: polygon(
+    12px 0, calc(100% - 12px) 0,
+    100% 12px, 100% calc(100% - 12px),
+    calc(100% - 12px) 100%, 12px 100%,
+    0 calc(100% - 12px), 0 12px
+  );
+}
+
+/* NERV label styling */
+.nerv-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--nerv-text-dim);
+}
+
+/* Reduced motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  .nerv-scanlines,
+  .nerv-vignette { display: none; }
+  .nerv-flicker,
+  .nerv-tear,
+  .nerv-glitch-subtle,
+  .nerv-glitch-aggressive,
+  .nerv-blink,
+  .nerv-border-glow,
+  .nerv-warning-pulse,
+  .nerv-hover-glow,
+  .nerv-number-flicker,
+  .nerv-status-dot,
+  .nerv-flash { animation: none !important; }
+}

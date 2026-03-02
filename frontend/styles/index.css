@@ -1,0 +1,81 @@
+@import "tailwindcss";
+@import "./nerv-animations.css";
+
+/* Golden ratio spacing scale (PHI = 1.618) */
+:root {
+  --phi: 1.618;
+  --space-xs: 8px;
+  --space-sm: 13px;
+  --space-md: 21px;
+  --space-lg: 34px;
+  --space-xl: 55px;
+  --space-xxl: 89px;
+
+  /* NERV color tokens */
+  --nerv-bg: #0A0A12;
+  --nerv-red: #FF0040;
+  --nerv-green: #00FF41;
+  --nerv-orange: #FF6600;
+  --nerv-cyan: #00D4FF;
+  --nerv-yellow: #FFCC00;
+  --nerv-purple: #8B5CF6;
+  --nerv-text: #E8E6E3;
+  --nerv-text-dim: rgba(232, 230, 227, 0.5);
+  --nerv-border: rgba(255, 0, 64, 0.3);
+  --nerv-glow: rgba(255, 0, 64, 0.15);
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+#nerv-root {
+  height: 100%;
+  width: 100%;
+}
+
+/* Selection colors */
+::selection {
+  background: var(--selection-color, rgba(255, 0, 64, 0.3));
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
