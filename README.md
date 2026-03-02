@@ -1,55 +1,77 @@
-# clean-writer-ruby-version
+# Clean Writer (Ruby Version)
 
-A 1:1 reimplementation of [clean-writer](https://github.com/stussysenik/clean-writer) in **Rails 8 + React 19**, adding server persistence, multi-tab sync, and a deployable backend.
+> A distraction-free writing app with real-time syntax highlighting, 16 themes, song mode with rhyme detection — rebuilt in Rails 8 + React 19 with server persistence.
 
-Everything the original clean-writer does — distraction-free writing with 16 themes, real-time syntax highlighting, song mode with rhyme detection — but backed by PostgreSQL instead of localStorage.
+![Editor — Classic Theme](docs/screenshots/08-classic-light.jpg)
 
-## Why
+**[Live Demo](https://clean-writer-ruby-version.fly.dev/)**
 
-The original clean-writer is a static React app. It works great, but:
+---
+
+## What Is This
+
+A 1:1 reimplementation of [clean-writer](https://github.com/stussysenik/clean-writer) adding a Rails backend for persistence, real-time sync, and deployment. Everything the original does — but backed by PostgreSQL instead of localStorage.
 
 | | clean-writer | clean-writer-ruby-version |
 |---|---|---|
-| **Storage** | localStorage (one browser) | PostgreSQL (any device) |
-| **Multi-tab** | Conflicts / overwrites | ActionCable real-time sync |
-| **Themes** | Hardcoded JSON | Database-backed, customizable per session |
-| **Settings** | localStorage | Server-persisted per session |
-| **Offline** | Always works | Offline queue with IndexedDB replay |
-| **Deploy** | Static hosting | Fly.io / any Docker host |
-| **Extensibility** | Frontend-only | Full Rails API for future features |
+| Storage | localStorage (one browser) | PostgreSQL (any device) |
+| Multi-tab | Conflicts / overwrites | ActionCable real-time sync |
+| Themes | Hardcoded JSON | Database-backed, customizable |
+| Settings | localStorage | Server-persisted per session |
+| Offline | Always works | IndexedDB queue with replay |
+| Deploy | Static hosting | Fly.io / any Docker host |
 
-## Architecture
+---
 
-```
-┌─────────────────────────────────────────────┐
-│  Browser                                     │
-│  ┌─────────────────────────────────────────┐ │
-│  │  React 19 (Vite)                        │ │
-│  │  - Typewriter editor                    │ │
-│  │  - Syntax highlighting (Web Worker)     │ │
-│  │  - Song mode / rhyme detection          │ │
-│  │  - 16 theme presets + customizer        │ │
-│  │  - GSAP animations                      │ │
-│  └──────────┬──────────────────────────────┘ │
-│             │ REST API + ActionCable          │
-└─────────────┼────────────────────────────────┘
-              │
-┌─────────────┼────────────────────────────────┐
-│  Rails 8.1  │                                │
-│  ┌──────────┴──────────────────────────────┐ │
-│  │  API Controllers (v1)                   │ │
-│  │  - Documents (autosave, CRUD)           │ │
-│  │  - Themes (presets + overrides)         │ │
-│  │  - Settings (per-session)               │ │
-│  │  - Export (markdown download)           │ │
-│  └──────────┬──────────────────────────────┘ │
-│             │                                │
-│  ┌──────────┴──────────────────────────────┐ │
-│  │  PostgreSQL                             │ │
-│  │  Solid Cache · Solid Queue · Solid Cable│ │
-│  └─────────────────────────────────────────┘ │
-└──────────────────────────────────────────────┘
-```
+## Product Demo
+
+### Writing Editor
+
+The core experience is a distraction-free typewriter with real-time part-of-speech highlighting. Every word is color-coded by grammatical role (nouns, verbs, adjectives, etc.) as you type, powered by [compromise NLP](https://github.com/spencermountain/compromise) running in a Web Worker.
+
+![Editor with syntax highlighting](docs/screenshots/01-editor-default.jpg)
+
+The right panel shows a live word count and part-of-speech breakdown. Toggle any category with keyboard shortcuts `1`-`9` to dim or highlight specific word types.
+
+### 16 Theme Presets
+
+One-click theme switching from the color dot bar. Themes range from light (Classic, Paper, Sepia) to dark (Midnight, Terminal, NERV) to music-inspired (Spotify, Apple Music, SoundCloud, Deezer).
+
+| | |
+|---|---|
+| ![Midnight](docs/screenshots/03-midnight-theme.jpg) | ![Terminal](docs/screenshots/04-terminal-theme.jpg) |
+| **Midnight** — deep blue dark theme | **Terminal** — green-on-black hacker aesthetic |
+| ![Spotify](docs/screenshots/05-spotify-theme.jpg) | ![NERV](docs/screenshots/02-nerv-boot.jpg) |
+| **Spotify** — dark with green accents | **NERV** — Evangelion tech-art with CRT overlay |
+
+### Song Mode
+
+Toggle **SONG** in the sidebar to activate rhyme detection powered by the CMU Pronouncing Dictionary. The panel shows syllable count, line count, detected rhyme scheme (ABACD, AABB, etc.), and rhyme group pairs — all color-coded with highlighting in the editor.
+
+![Song mode with rhyme detection](docs/screenshots/06-song-mode.jpg)
+
+### Theme Customizer
+
+Click **Customize Theme** to open a full color editor. Override background, text, cursor, and all 9 word-type colors per theme. Shuffle generates random harmonious palettes. Save as a custom theme or reset to presets.
+
+![Theme customizer panel](docs/screenshots/07-theme-customizer.jpg)
+
+### Markdown Preview
+
+Toggle preview mode from the toolbar to see rendered markdown output with proper formatting.
+
+![Markdown preview](docs/screenshots/09-markdown-preview.jpg)
+
+### More Features
+
+- **Adjustable line width** — drag the slider (300–1400px) for your preferred column width
+- **Font size controls** — increase/decrease/reset from the top bar
+- **Strikethrough mode** — select text and strike it, then bulk-remove all struck segments
+- **Export** — download your document as a `.md` file
+- **Auto-save** — content persists to server on every keystroke (debounced)
+- **Keyboard shortcuts** — `?` opens the full shortcut reference
+
+---
 
 ## The NERV Theme
 
@@ -62,25 +84,48 @@ The 16th theme is a full **Neon Genesis Evangelion** tech-art aesthetic:
 
 The NERV components live in `frontend/components/nerv/` and activate only when the NERV theme is selected.
 
+---
+
+## Architecture
+
+```
+Browser                              Server
+┌──────────────────────────┐        ┌──────────────────────────┐
+│  React 19 + TypeScript   │  REST  │  Rails 8.1 API (v1)      │
+│  ├─ Typewriter editor    │◄──────►│  ├─ Documents (autosave)  │
+│  ├─ NLP syntax highlight │  API   │  ├─ Themes (presets)      │
+│  ├─ Song mode + rhymes   │        │  ├─ Settings (per-session)│
+│  ├─ 16 themes + customizer│ WS   │  ├─ Export (markdown)     │
+│  └─ GSAP animations     │◄──────►│  └─ ActionCable (sync)    │
+└──────────────────────────┘        └────────────┬─────────────┘
+                                                 │
+                                    ┌────────────┴─────────────┐
+                                    │  PostgreSQL               │
+                                    │  Solid Cache/Queue/Cable  │
+                                    └──────────────────────────┘
+```
+
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| **Backend** | Rails 8.1, Ruby 4.0.1 |
-| **Frontend** | React 19, TypeScript 5.8 |
-| **Build** | Vite 6.4, vite_rails |
-| **Database** | PostgreSQL |
-| **Real-time** | ActionCable (Solid Cable) |
-| **Background Jobs** | Solid Queue (in-Puma) |
-| **Caching** | Solid Cache |
-| **Styling** | Tailwind CSS 4 |
-| **Animation** | GSAP 3.14 |
-| **NLP** | compromise 14 (Web Worker) |
-| **Rhyme Detection** | CMU Pronouncing Dictionary |
-| **Drag & Drop** | dnd-kit |
-| **Markdown** | react-markdown + remark-gfm |
-| **HTTP Proxy** | Thruster |
-| **Deployment** | Fly.io (Docker) |
+| Backend | Rails 8.1, Ruby 4.0.1 |
+| Frontend | React 19, TypeScript 5.8 |
+| Build | Vite 6.4, vite_rails |
+| Database | PostgreSQL |
+| Real-time | ActionCable (Solid Cable) |
+| Background Jobs | Solid Queue (in-Puma) |
+| Caching | Solid Cache |
+| Styling | Tailwind CSS 4 |
+| Animation | GSAP 3.14 |
+| NLP | compromise 14 (Web Worker) |
+| Rhyme Detection | CMU Pronouncing Dictionary |
+| Drag & Drop | dnd-kit |
+| Markdown | react-markdown + remark-gfm |
+| HTTP Proxy | Thruster |
+| Deployment | Fly.io (Docker) |
+
+---
 
 ## Setup
 
@@ -95,7 +140,6 @@ The NERV components live in `frontend/components/nerv/` and activate only when t
 ```bash
 git clone https://github.com/stussysenik/clean-writer-ruby-version.git
 cd clean-writer-ruby-version
-
 bundle install
 npm install
 ```
@@ -113,9 +157,9 @@ bin/rails db:seed    # seeds 16 preset themes
 bin/dev
 ```
 
-This starts both Rails (port 3000) and Vite dev server via `Procfile.dev`.
+Starts Rails (port 3000) + Vite dev server via `Procfile.dev`. Open [http://localhost:3000](http://localhost:3000).
 
-Open [http://localhost:3000](http://localhost:3000).
+---
 
 ## Deployment (Fly.io)
 
@@ -132,31 +176,35 @@ fly secrets set RAILS_MASTER_KEY=$(cat config/master.key) --app clean-writer-rub
 ### Deploy
 
 ```bash
-fly deploy --app clean-writer-ruby-version
+fly deploy
 ```
 
-### Seed themes (one-time after first deploy)
+### Seed themes (one-time)
 
 ```bash
-fly ssh console --app clean-writer-ruby-version -C "/rails/bin/rails db:seed"
+fly ssh console -C "/rails/bin/rails db:seed"
 ```
 
-### Estimated cost
+### Cost
 
-| Resource | Spec | Cost |
-|----------|------|------|
-| Web machine | shared-cpu-1x, 512MB | ~$3.32/mo |
-| Postgres | shared-cpu-1x, 256MB, 1GB disk | ~$2.17/mo |
-| **Total** | | **~$5.49/mo** |
+| Resource | Spec | Monthly |
+|----------|------|---------|
+| Web machine | shared-cpu-1x, 512MB | ~$3.32 |
+| Postgres | shared-cpu-1x, 256MB, 1GB | ~$2.17 |
+| **Total** | | **~$5.49** |
 
-Auto-stop machines reduce cost when idle. New accounts get a free trial.
+Auto-stop machines reduce cost when idle.
+
+---
 
 ## Models
 
-- **Document** — content, word count, view mode, font settings, highlight config (per session)
-- **Theme** — 16 presets + custom themes with full color customization
-- **ThemeOverride** — per-session color overrides for any theme
-- **UserSetting** — active theme, theme order, visibility, rhyme settings (per session)
+| Model | Purpose |
+|-------|---------|
+| **Document** | Content, word count, view mode, font settings, highlight config |
+| **Theme** | 16 presets + custom themes with full color customization |
+| **ThemeOverride** | Per-session color overrides for any theme |
+| **UserSetting** | Active theme, theme order, visibility, rhyme settings |
 
 ## License
 
