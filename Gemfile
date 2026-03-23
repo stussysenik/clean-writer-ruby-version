@@ -10,7 +10,7 @@ gem "puma", ">= 5.0"
 gem "jbuilder"
 
 # Vite for modern frontend asset pipeline
-gem "vite_rails", "~> 3.0"
+gem "vite_rails", "~> 3.10"
 # CORS for API requests
 gem "rack-cors"
 # Fast JSON serialization
