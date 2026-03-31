@@ -2,6 +2,9 @@
 
 # Clean Writer (Ruby Version)
 
+![Demo](demo.gif)
+
+
 ### Distraction-free writing with real-time syntax highlighting
 
 [![Language](https://img.shields.io/github/languages/top/stussysenik/clean-writer-ruby-version?style=flat-square)]()
